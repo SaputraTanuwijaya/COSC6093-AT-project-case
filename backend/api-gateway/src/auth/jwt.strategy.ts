@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found');
     }
     // WARNING! Removing the password field before returning the user object
-    delete user.password;
-    return user;
+    const { password, ...result } = user;
+    return result;
   }
 }
