@@ -5,8 +5,8 @@ import { HomePage } from "./pages/HomePage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminRoute } from "./components/AdminRoute";
 import { ProductPage } from "./pages/ProductPage";
+import { MyOrdersPage } from "./pages/MyOrdersPage";
 
-const MyOrdersPage = () => <p>My Orders</p>;
 const AdminPage = () => <p>Admin Dashboard</p>;
 
 export function App() {

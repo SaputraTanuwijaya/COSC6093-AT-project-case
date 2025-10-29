@@ -31,7 +31,7 @@ export function ProductPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await api.get("/products");
+        const response = await api.get("/product");
         setProducts(response.data);
       } catch (err) {
         console.error(err);
@@ -42,7 +42,7 @@ export function ProductPage() {
     };
 
     fetchProducts();
-  }, []); 
+  }, []);
 
   if (loading) {
     return (
