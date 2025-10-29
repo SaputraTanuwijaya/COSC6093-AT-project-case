@@ -1,0 +1,327 @@
+{
+  "info": {
+    "_postman_id": "812e03cf-65eb-407c-bee7-ee2602fd5b9b",
+    "name": "Postman for Prisma SubcoTest Ecommerce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37455473"
+  },
+  "item": [
+    {
+      "name": "http://localhost:3000/auth/register",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/users/me",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/auth/login",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/user/me",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzYxNjI4NjY0LCJleHAiOjE3NjE3MTUwNjR9.LrZxxjb19sD9x-eAaCvmOmJlnfP2i3_pIQo6Z2BS4G0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/product",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["product"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/auth/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"admin@quantum.com\",\r\n  \"password\": \"admin123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/product",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AcXVhbnR1bS5jb20iLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3NjE2MzY5NzIsImV4cCI6MTc2MTcyMzM3Mn0.CtI1YIMc5VtpAoK2VVxu2_AVQ0Xr0-HPyR3SBU3Iub0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Pro Icon Set\",\r\n  \"description\": \"A set of 1000 premium icons.\",\r\n  \"price\": 49.99,\r\n  \"stock\": 500\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/product",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["product"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/auth/login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/product",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzYxNjM3MjkzLCJleHAiOjE3NjE3MjM2OTN9.poykwAu3VkLcD2LSnb2xpZnkGz_8Xritj82ae0a7s70",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Pro Icon Set\",\r\n  \"description\": \"A set of 1000 premium icons.\",\r\n  \"price\": 49.99,\r\n  \"stock\": 500\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/product",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["product"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/order",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/order",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["order"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/order",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzYxNjM5MTEyLCJleHAiOjE3NjE3MjU1MTJ9.MYBQHIBcx4YKlZL6Y8cNJGZMMS4ZgX2q_XlkDyRh5p0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"productIds\": [1]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/order",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["order"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/order",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzYxNjM5MTEyLCJleHAiOjE3NjE3MjU1MTJ9.MYBQHIBcx4YKlZL6Y8cNJGZMMS4ZgX2q_XlkDyRh5p0",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/order",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["order"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/product/1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/product/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["product", "1"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
