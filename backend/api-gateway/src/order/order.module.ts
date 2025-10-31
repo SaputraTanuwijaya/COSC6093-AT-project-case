@@ -9,7 +9,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'ECOMMERCE_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: 'localhost',
+          // Choose host either for local or for Container
+          // host: 'localhost',
+          host: 'ecommerce-service',
           port: 3001,
         },
       },

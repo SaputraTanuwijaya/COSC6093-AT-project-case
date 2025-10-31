@@ -1,9 +1,9 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --ignore-scripts
 
 COPY . .
 
@@ -11,18 +11,6 @@ RUN npx prisma generate
 
 RUN npm run build
 
-FROM node:18-alpine
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-RUN npm install --omit=dev --legacy-peer-deps
-
-COPY --from=builder /usr/src/app/dist ./dist
-
-COPY --from=builder /usr/src/app/prisma ./prisma
-COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
-
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main.js"]
