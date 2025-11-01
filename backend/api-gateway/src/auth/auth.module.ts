@@ -1,18 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { PrismaModule } from '../prisma/prisma.module';
-// import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './auth.controller';
+import { UserController } from './user.controller';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    PrismaModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    // JwtModule,
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'auth-service',
+          port: 3002,
+        },
+      },
+    ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  controllers: [AuthController, UserController],
+  providers: [JwtStrategy],
 })
 export class AuthModule {}

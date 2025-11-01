@@ -10,6 +10,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      auth-service:
+        condition: service_started
+      ecommerce-service:
+        condition: service_started
 
   ecommerce-service:
     build:
@@ -17,6 +21,16 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./backend/ecommerce-service/.env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/auth-service/.env
     depends_on:
       db:
         condition: service_healthy
@@ -32,6 +46,9 @@ services:
     image: mysql:8.0
     container_name: db
     restart: unless-stopped
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    #   MYSQL_DATABASE: ${MYSQL_DATABASE}
     env_file:
       - ./.env
     ports:
@@ -39,7 +56,15 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD}"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
