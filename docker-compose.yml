@@ -7,6 +7,7 @@ services:
       - "3000:3000"
     env_file:
       - ./backend/api-gateway/.env
+    restart: on-failure
     depends_on:
       db:
         condition: service_healthy
@@ -21,6 +22,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./backend/ecommerce-service/.env
+    restart: on-failure
     depends_on:
       db:
         condition: service_healthy
@@ -31,6 +33,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./backend/auth-service/.env
+    restart: on-failure
     depends_on:
       db:
         condition: service_healthy

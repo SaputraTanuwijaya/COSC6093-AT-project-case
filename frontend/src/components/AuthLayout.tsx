@@ -1,5 +1,5 @@
 import { Center, Container } from "@mantine/core";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface AuthLayoutProps {
   children: ReactNode;

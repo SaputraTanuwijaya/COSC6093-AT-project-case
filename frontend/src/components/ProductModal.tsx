@@ -35,6 +35,7 @@ export function ProductModal({
       description: "",
       price: 0,
       stock: 0,
+      imageUrl: null as string | null,
     },
     validate: {
       name: (val) => (val.trim().length === 0 ? "Name is required" : null),
@@ -74,6 +75,7 @@ export function ProductModal({
       opened={opened}
       onClose={onClose}
       title={isEditing ? "Edit Product" : "Create Product"}
+      centered
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <LoadingOverlay visible={loading} />
@@ -105,6 +107,12 @@ export function ProductModal({
           mt="md"
           required
           {...form.getInputProps("stock")}
+        />
+        <TextInput
+          label="Image URL"
+          placeholder="https://example.com/image.png"
+          mt="md"
+          {...form.getInputProps("imageUrl")}
         />
 
         {error && (

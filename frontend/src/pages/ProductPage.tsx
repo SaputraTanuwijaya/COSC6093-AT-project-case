@@ -22,6 +22,7 @@ interface Product {
   description: string;
   price: number;
   stock: number;
+  imageUrl: string | null;
 }
 
 export function ProductPage() {
@@ -94,7 +95,10 @@ export function ProductPage() {
             >
               <Card.Section>
                 <Image
-                  src={`https://picsum.photos/seed/${product.id}/400/200`}
+                  src={
+                    product.imageUrl ||
+                    "https://placehold.co/600x400/EEE/AAA/png?text=No+Image"
+                  }
                   height={160}
                   alt={product.name}
                 />

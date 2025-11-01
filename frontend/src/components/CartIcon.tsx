@@ -77,7 +77,8 @@ export function CartIcon() {
         onClose={() => setModalOpened(false)}
         title="Your Cart"
         size="lg"
-        pos="relative"
+        // pos="relative"
+        centered
       >
         <LoadingOverlay visible={loading} />
         {cart.length === 0 ? (

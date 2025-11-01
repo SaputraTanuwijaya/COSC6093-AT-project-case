@@ -22,13 +22,16 @@ async function main() {
 
   const product1 = await prisma.product.upsert({
     where: { id: 1 },
-    update: {},
+    update: {
+      imageUrl: 'https://gs-dsp.com/images/quantum-delay-ui-mod-chooser.webp',
+    },
     create: {
       id: 1,
       name: 'Quantum Design Bundle',
       description: 'A premium collection of 100+ design templates',
       price: 99.99,
       stock: 100,
+      imageUrl: 'https://gs-dsp.com/images/quantum-delay-ui-mod-chooser.webp', 
     },
   });
   console.log(`Created product: ${product1.name}`);
