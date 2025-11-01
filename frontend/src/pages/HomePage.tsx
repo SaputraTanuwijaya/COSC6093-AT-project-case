@@ -10,7 +10,7 @@ export function HomePage() {
       <Title>Welcome to Quantum Store!</Title>
 
       <Text mt="md">Browse our collection of high-end digital assets.</Text>
-      <Button component={Link} to="/products" mt="md">
+      <Button component={Link} to="/product" mt="md">
         Browse Products
       </Button>
 
