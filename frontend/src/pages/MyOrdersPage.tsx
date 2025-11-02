@@ -6,9 +6,13 @@ import {
   Table,
   Text,
   Paper,
+  Badge,
+  Divider,
+  Center,
+  Box,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
 import api from "../lib/api";
+import { useEffect, useState } from "react";
 
 interface Order {
   id: number;
@@ -41,45 +45,113 @@ export function MyOrdersPage() {
 
   if (loading) {
     return (
-      <Container pt="xl" style={{ textAlign: "center" }}>
-        <Loader />
-      </Container>
+      <Center h="70vh">
+        <Loader size="lg" />
+      </Center>
     );
   }
 
   if (error) {
     return (
-      <Container pt="xl">
-        <Alert color="red" title="Error">
+      <Center h="70vh">
+        <Alert color="red" radius="md" variant="light" title="Error">
           {error}
         </Alert>
-      </Container>
+      </Center>
     );
   }
 
   const rows = orders.map((order) => (
-    <Table.Tr key={order.id}>
-      <Table.Td>{order.id}</Table.Td>
-      <Table.Td>{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
-      <Table.Td>${order.total.toFixed(2)}</Table.Td>
+    <Table.Tr
+      key={order.id}
+      style={{
+        transition: "all 0.25s ease",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.backgroundColor =
+          "rgba(0, 0, 0, 0.05)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+      }}
+    >
+      <Table.Td>
+        <Badge color="blue" variant="light" radius="sm">
+          #{order.id}
+        </Badge>
+      </Table.Td>
+      <Table.Td>
+        {new Date(order.createdAt).toLocaleDateString(undefined, {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
+      </Table.Td>
+      <Table.Td fw={600}>${order.total.toFixed(2)}</Table.Td>
     </Table.Tr>
   ));
 
   return (
-    <Container pt="lg">
-      <Title order={1} mb="lg">
-        My Orders
-      </Title>
+    <Container size="lg" py="xl">
+      <Box
+        mb="lg"
+        p="md"
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <Title
+          order={2}
+          mb="xs"
+          style={{
+            fontWeight: 700,
+            letterSpacing: "-0.5px",
+          }}
+        >
+          My Orders
+        </Title>
+        <Text c="dimmed" size="sm">
+          Review your past purchases and order history
+        </Text>
+        <Divider mt="sm" w="80px" mx="auto" />
+      </Box>
+
       {orders.length === 0 ? (
-        <Text>You have not placed any orders yet.</Text>
+        <Center h="50vh">
+          <Text c="dimmed" size="lg">
+            You haven't placed any orders yet.
+          </Text>
+        </Center>
       ) : (
-        <Paper withBorder shadow="sm" radius="md">
-          <Table striped highlightOnHover>
+        <Paper
+          withBorder
+          shadow="md"
+          radius="lg"
+          p="md"
+          style={{
+            backdropFilter: "blur(8px)",
+            background: "rgba(255, 255, 255, 0.85)",
+            transition: "0.3s all",
+          }}
+        >
+          <Table
+            highlightOnHover
+            verticalSpacing="md"
+            horizontalSpacing="lg"
+            fs="sm"
+            withColumnBorders={false}
+          >
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Order ID</Table.Th>
-                <Table.Th>Date</Table.Th>
-                <Table.Th>Total</Table.Th>
+                <Table.Th>
+                  <Text fw={600}>Order ID</Text>
+                </Table.Th>
+                <Table.Th>
+                  <Text fw={600}>Date</Text>
+                </Table.Th>
+                <Table.Th>
+                  <Text fw={600}>Total</Text>
+                </Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>{rows}</Table.Tbody>

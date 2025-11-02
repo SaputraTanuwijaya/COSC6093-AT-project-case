@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Modal,
   TextInput,
@@ -6,6 +8,10 @@ import {
   Button,
   LoadingOverlay,
   Alert,
+  Title,
+  Divider,
+  Group,
+  Stack,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
@@ -35,7 +41,7 @@ export function ProductModal({
       description: "",
       price: 0,
       stock: 0,
-      imageUrl: null as string | null,
+      imageUrl: "",
     },
     validate: {
       name: (val) => (val.trim().length === 0 ? "Name is required" : null),
@@ -46,7 +52,13 @@ export function ProductModal({
 
   useEffect(() => {
     if (product) {
-      form.setValues(product);
+      form.setValues({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        imageUrl: product.imageUrl ?? "",
+      });
     } else {
       form.reset();
     }
@@ -62,9 +74,10 @@ export function ProductModal({
         await api.post("/product", values);
       }
       onSuccess();
+      onClose();
     } catch (err: any) {
       console.error(err);
-      setError(err.response?.data?.message || "An error occurred.");
+      setError(err.response?.data?.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -74,56 +87,108 @@ export function ProductModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={isEditing ? "Edit Product" : "Create Product"}
+      withCloseButton
       centered
+      radius="xl"
+      size="lg"
+      overlayProps={{
+        backgroundOpacity: 0.5,
+        blur: 10,
+      }}
+      transitionProps={{ transition: "pop", duration: 250 }}
+      styles={{
+        content: {
+          maxWidth: "550px",
+        },
+      }}
     >
+      <LoadingOverlay visible={loading} />
+
+      <Stack gap="0" mb="xl">
+        <Title
+          order={3}
+          ta="center"
+          style={{
+            background: "linear-gradient(90deg, #7f00ff, #1e90ff)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            fontWeight: 700,
+            fontSize: "1.5rem",
+            letterSpacing: "0.5px",
+          }}
+        >
+          {isEditing ? "Edit Product" : "Create New Product"}
+        </Title>
+        <Divider my="md" />
+      </Stack>
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <LoadingOverlay visible={loading} />
-        <TextInput
-          label="Name"
-          placeholder="Product name"
-          required
-          {...form.getInputProps("name")}
-        />
-        <Textarea
-          label="Description"
-          placeholder="Product description"
-          mt="md"
-          {...form.getInputProps("description")}
-        />
-        <NumberInput
-          label="Price"
-          placeholder="99.99"
-          step={0.01}
-          min={0}
-          mt="md"
-          required
-          {...form.getInputProps("price")}
-        />
-        <NumberInput
-          label="Stock"
-          placeholder="100"
-          min={0}
-          mt="md"
-          required
-          {...form.getInputProps("stock")}
-        />
-        <TextInput
-          label="Image URL"
-          placeholder="https://example.com/image.png"
-          mt="md"
-          {...form.getInputProps("imageUrl")}
-        />
+        <Stack gap="md">
+          <TextInput
+            label="Product Name"
+            placeholder="Enter product name"
+            radius="md"
+            size="md"
+            withAsterisk
+            {...form.getInputProps("name")}
+          />
 
-        {error && (
-          <Alert color="red" title="Error" mt="md">
-            {error}
-          </Alert>
-        )}
+          <Textarea
+            label="Description"
+            placeholder="Describe your product..."
+            radius="md"
+            size="md"
+            autosize
+            minRows={3}
+            maxRows={5}
+            {...form.getInputProps("description")}
+          />
 
-        <Button type="submit" fullWidth mt="xl">
-          {isEditing ? "Update Product" : "Create Product"}
-        </Button>
+          <Group grow>
+            <NumberInput
+              label="Price ($)"
+              placeholder="0.00"
+              step={0.01}
+              min={0}
+              radius="md"
+              size="md"
+              {...form.getInputProps("price")}
+            />
+            <NumberInput
+              label="Stock"
+              placeholder="0"
+              min={0}
+              radius="md"
+              size="md"
+              {...form.getInputProps("stock")}
+            />
+          </Group>
+
+          <TextInput
+            label="Image URL"
+            placeholder="https://example.com/image.png"
+            radius="md"
+            size="md"
+            {...form.getInputProps("imageUrl")}
+          />
+
+          {error && (
+            <Alert color="red" title="Error" variant="light" radius="md">
+              {error}
+            </Alert>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            radius="md"
+            size="md"
+            mt="xl"
+            loading={loading}
+          >
+            {isEditing ? "Update Product" : "Create Product"}
+          </Button>
+        </Stack>
       </form>
     </Modal>
   );

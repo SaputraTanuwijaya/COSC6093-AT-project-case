@@ -8,6 +8,10 @@ import {
   Stack,
   Alert,
   LoadingOverlay,
+  Divider,
+  Paper,
+  ScrollArea,
+  Box,
 } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { useAuthStore } from "../store/auth.store";
@@ -45,8 +49,9 @@ export function CartIcon() {
       } catch (err) {
         console.error(err);
         setError("Failed to fetch cart details.");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchCartProducts();
   }, [cart, modalOpened, user]);
@@ -75,69 +80,138 @@ export function CartIcon() {
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title="Your Cart"
-        size="lg"
-        // pos="relative"
-        centered
+        withCloseButton
+        radius="xl"
+        overlayProps={{
+          backgroundOpacity: 0.5,
+          blur: 10,
+        }}
+        transitionProps={{
+          transition: "pop",
+          duration: 250,
+        }}
+        styles={{
+          // modal: {},
+          content: {
+            marginLeft: "auto",
+            marginRight: 0,
+            maxWidth: "480px",
+            height: "fit-content",
+            maxHeight: "90vh",
+          },
+        }}
       >
+        <Stack gap="0" mb="md">
+          <Text fw={700} size="xl" ta="center">
+            🛒 Your Cart
+          </Text>
+          <Divider my="md" />
+        </Stack>
+
         <LoadingOverlay visible={loading} />
-        {cart.length === 0 ? (
-          <Text>Your cart is empty.</Text>
-        ) : (
-          <Stack>
-            {cartProducts.map((product) => (
-              <Group key={product.id} justify="space-between">
-                <Text>{product.name}</Text>
-                <Group>
-                  <Text>${product.price.toFixed(2)}</Text>
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    color="red"
-                    onClick={() => removeFromCart(product.id)}
-                  >
-                    Remove
-                  </Button>
-                </Group>
+
+        <Stack gap="md" mb="md">
+          {cart.length === 0 ? (
+            <Box ta="center" py="xl">
+              <Text c="dimmed" size="md">
+                Your cart is empty. Start adding some cool stuff!
+              </Text>
+            </Box>
+          ) : (
+            <>
+              <ScrollArea.Autosize mah={350} offsetScrollbars>
+                <Stack gap="sm">
+                  {cartProducts.map((product) => (
+                    <Paper
+                      key={product.id}
+                      p="md"
+                      radius="md"
+                      style={{
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <Group justify="space-between">
+                        <div>
+                          <Text fw={600} size="sm">
+                            {product.name}
+                          </Text>
+                          <Text fw={700} size="lg" c="blue" mt="4">
+                            ${product.price.toFixed(2)}
+                          </Text>
+                        </div>
+                        <Button
+                          size="xs"
+                          variant="light"
+                          color="red"
+                          radius="md"
+                          onClick={() => removeFromCart(product.id)}
+                        >
+                          Remove
+                        </Button>
+                      </Group>
+                    </Paper>
+                  ))}
+                </Stack>
+              </ScrollArea.Autosize>
+
+              <Divider my="md" />
+
+              <Group justify="space-between">
+                <Text fw={700} size="lg">
+                  Total:
+                </Text>
+                <Text fw={700} size="lg" c="blue">
+                  ${total.toFixed(2)}
+                </Text>
               </Group>
-            ))}
-            <Group
-              justify="space-between"
-              mt="md"
-              style={{ borderTop: "1px solid grey", paddingTop: "1rem" }}
-            >
-              <Text fw={700} size="lg">
-                Total:
-              </Text>
-              <Text fw={700} size="lg">
-                ${total.toFixed(2)}
-              </Text>
-            </Group>
-            {error && (
-              <Alert color="red" title="Error">
-                {error}
-              </Alert>
-            )}
-            <Button
-              fullWidth
-              mt="md"
-              onClick={handleCheckout}
-              disabled={loading}
-            >
-              Checkout
-            </Button>
-          </Stack>
+            </>
+          )}
+        </Stack>
+
+        {error && (
+          <Alert color="red" title="Error" radius="md" mb="md">
+            {error}
+          </Alert>
+        )}
+
+        {cart.length > 0 && (
+          <Button
+            fullWidth
+            radius="md"
+            size="md"
+            onClick={handleCheckout}
+            disabled={loading}
+          >
+            Proceed to Checkout
+          </Button>
         )}
       </Modal>
 
-      <Indicator label={cart.length} size={16} disabled={cart.length === 0}>
+      <Indicator
+        label={cart.length}
+        size={20}
+        disabled={cart.length === 0}
+        color="blue"
+        processing
+      >
         <ActionIcon
           size="lg"
-          variant="subtle"
-          color="gray"
+          variant="light"
+          radius="xl"
+          color="blue"
           onClick={() => setModalOpened(true)}
+          style={{
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            ((e.currentTarget as HTMLElement).style.transform = "scale(1.12)")
+          }
+          onMouseLeave={(e) =>
+            ((e.currentTarget as HTMLElement).style.transform = "scale(1)")
+          }
         >
-          <IconShoppingCart />
+          <IconShoppingCart style={{ width: "70%", height: "70%" }} />
         </ActionIcon>
       </Indicator>
     </>

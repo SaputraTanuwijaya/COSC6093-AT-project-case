@@ -12,9 +12,11 @@ import { Layout } from "./components/Layout";
 export function App() {
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* Public routes not in the main layout */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+
+      {/* All other routes are children of the main Layout */}
       <Route path="/" element={<Layout />}>
         {/* Public Routes */}
         <Route index element={<HomePage />} />

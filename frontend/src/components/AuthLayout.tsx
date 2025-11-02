@@ -1,18 +1,35 @@
-import { Center, Container } from "@mantine/core";
-import { type ReactNode } from "react";
+import type React from "react";
+import { Center, Paper, Stack, Text } from "@mantine/core";
 
-interface AuthLayoutProps {
-  children: ReactNode;
-}
-
-export function AuthLayout({ children }: AuthLayoutProps) {
+export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Container fluid h="100vh">
-      <Center h="100%">
-        <Container size="xs" w="100%">
+    <Center
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #0f0f1f 0%, #1b1b2f 50%, #251533 100%)",
+        padding: "2rem",
+      }}
+    >
+      <Stack gap="0" align="center">
+        <Paper
+          radius="xl"
+          shadow="lg"
+          p="2.5rem"
+          style={{
+            width: "min(95vw, 450px)",
+            background: "rgba(255, 255, 255, 0.08)",
+            border: "1px solid rgba(255, 255, 255, 0.12)",
+            backdropFilter: "blur(12px)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+          }}
+        >
           {children}
-        </Container>
-      </Center>
-    </Container>
+        </Paper>
+        <Text size="xs" c="dimmed" mt="xl" ta="center">
+          Quantum Store © 2025
+        </Text>
+      </Stack>
+    </Center>
   );
 }

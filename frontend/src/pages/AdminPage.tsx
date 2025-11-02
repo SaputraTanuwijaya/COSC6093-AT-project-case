@@ -7,9 +7,11 @@ import {
   Button,
   Group,
   Paper,
+  Text,
+  Center,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
 import api from "../lib/api";
+import { useEffect, useState } from "react";
 import { ProductModal } from "../components/ProductModal";
 
 export interface Product {
@@ -70,14 +72,24 @@ export function AdminPage() {
 
   if (loading) {
     return (
-      <Container pt="xl" style={{ textAlign: "center" }}>
+      <Center pt="xl" style={{ minHeight: "70vh" }}>
         <Loader />
-      </Container>
+      </Center>
     );
   }
 
   const rows = products.map((product) => (
-    <Table.Tr key={product.id}>
+    <Table.Tr
+      key={product.id}
+      style={{ transition: "background 0.2s ease" }}
+      onMouseEnter={(e) =>
+        ((e.currentTarget as HTMLElement).style.background =
+          "rgba(255,255,255,0.05)")
+      }
+      onMouseLeave={(e) =>
+        ((e.currentTarget as HTMLElement).style.background = "transparent")
+      }
+    >
       <Table.Td>{product.id}</Table.Td>
       <Table.Td>{product.name}</Table.Td>
       <Table.Td>${product.price.toFixed(2)}</Table.Td>
@@ -86,7 +98,8 @@ export function AdminPage() {
         <Group gap="xs">
           <Button
             size="xs"
-            variant="outline"
+            variant="gradient"
+            gradient={{ from: "violet", to: "blue" }}
             onClick={() => openEditModal(product)}
           >
             Edit
@@ -94,6 +107,7 @@ export function AdminPage() {
           <Button
             size="xs"
             color="red"
+            variant="outline"
             onClick={() => handleDelete(product.id)}
           >
             Delete
@@ -104,10 +118,16 @@ export function AdminPage() {
   ));
 
   return (
-    <Container pt="lg">
+    <Container pt="lg" size="lg">
       <Group justify="space-between" mb="lg">
         <Title order={1}>Admin Dashboard</Title>
-        <Button onClick={openCreateModal}>Create New Product</Button>
+        <Button
+          onClick={openCreateModal}
+          gradient={{ from: "blue", to: "cyan" }}
+          variant="gradient"
+        >
+          Create New Product
+        </Button>
       </Group>
 
       {error && (
@@ -116,25 +136,41 @@ export function AdminPage() {
           title="Error"
           mb="lg"
           withCloseButton
+          variant="filled"
           onClose={() => setError(null)}
         >
           {error}
         </Alert>
       )}
 
-      <Paper withBorder shadow="sm" radius="md">
-        <Table striped highlightOnHover>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>ID</Table.Th>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Price</Table.Th>
-              <Table.Th>Stock</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+      <Paper
+        withBorder
+        shadow="xl"
+        radius="lg"
+        style={{
+          backdropFilter: "blur(12px)",
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.1)",
+        }}
+      >
+        {products.length === 0 ? (
+          <Text ta="center" p="xl" c="dimmed">
+            No products found.
+          </Text>
+        ) : (
+          <Table striped highlightOnHover>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>ID</Table.Th>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>Price</Table.Th>
+                <Table.Th>Stock</Table.Th>
+                <Table.Th>Actions</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        )}
       </Paper>
 
       <ProductModal
