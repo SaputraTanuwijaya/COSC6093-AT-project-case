@@ -2,9 +2,11 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { OrderStatus } from './order.enum';
 
 @Injectable()
 export class OrderService {
@@ -60,5 +62,47 @@ export class OrderService {
     return this.prisma.order.findMany({
       where: { userId },
     });
+  }
+
+  async cancelOrder(orderId: number, userId: number) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    if (order.userId !== userId) {
+      throw new ForbiddenException('You cannot cancel this order');
+    }
+    if (order.status !== OrderStatus.PENDING) {
+      throw new BadRequestException(
+        `Cannot cancel an order that is already ${order.status}`,
+      );
+    }
+
+    return this.prisma.order.update({
+      where: { id: orderId },
+      data: { status: OrderStatus.CANCELED },
+    });
+  }
+
+  async updateOrderStatus(orderId: number, status: OrderStatus) {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    return this.prisma.order.update({
+      where: { id: orderId },
+      data: { status },
+    });
+  }
+
+  async findAllOrders() {
+    return this.prisma.order.findMany();
   }
 }

@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 interface AuthState {
   token: string | null;
-  user: { id: number; email: string; role: string } | null;
+  user: { id: number; email: string; username: string; role: string } | null;
   cart: number[];
   setToken: (token: string) => void;
   setUser: (user: any) => void;

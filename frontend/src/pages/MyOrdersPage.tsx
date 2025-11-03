@@ -10,6 +10,8 @@ import {
   Divider,
   Center,
   Box,
+  Button,
+  // Group,
 } from "@mantine/core";
 import api from "../lib/api";
 import { useEffect, useState } from "react";
@@ -19,6 +21,7 @@ interface Order {
   userId: number;
   total: number;
   createdAt: string;
+  status: string;
 }
 
 export function MyOrdersPage() {
@@ -26,22 +29,34 @@ export function MyOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get("/order");
-        setOrders(response.data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch your orders.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get("/order");
+      setOrders(response.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch your orders.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchOrders();
   }, []);
+
+  const handleCancel = async (orderId: number) => {
+    if (window.confirm("Are you sure you want to cancel this order?")) {
+      try {
+        await api.patch(`/order/${orderId}/cancel`);
+        fetchOrders();
+      } catch (err: any) {
+        console.error(err);
+        setError(err.response?.data?.message || "Failed to cancel order.");
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -86,6 +101,32 @@ export function MyOrdersPage() {
           month: "short",
           year: "numeric",
         })}
+      </Table.Td>
+      <Table.Td>
+        <Badge
+          color={
+            order.status === "PENDING"
+              ? "yellow"
+              : order.status === "COMPLETED"
+              ? "green"
+              : "red"
+          }
+          variant="light"
+        >
+          {order.status}
+        </Badge>
+      </Table.Td>
+      <Table.Td>
+        {order.status === "PENDING" && (
+          <Button
+            size="xs"
+            color="red"
+            variant="outline"
+            onClick={() => handleCancel(order.id)}
+          >
+            Cancel Order
+          </Button>
+        )}
       </Table.Td>
       <Table.Td fw={600}>${order.total.toFixed(2)}</Table.Td>
     </Table.Tr>
@@ -151,6 +192,9 @@ export function MyOrdersPage() {
                 </Table.Th>
                 <Table.Th>
                   <Text fw={600}>Total</Text>
+                </Table.Th>
+                <Table.Th>
+                  <Text fw={600}>Status</Text>
                 </Table.Th>
               </Table.Tr>
             </Table.Thead>

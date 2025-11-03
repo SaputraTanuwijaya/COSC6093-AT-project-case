@@ -14,6 +14,7 @@ async function main() {
     update: {},
     create: {
       email: 'admin@quantum.com',
+      username: 'admin',
       password: hashedPassword,
       role: 'Admin',
     },
@@ -31,7 +32,7 @@ async function main() {
       description: 'A premium collection of 100+ design templates',
       price: 99.99,
       stock: 100,
-      imageUrl: 'https://gs-dsp.com/images/quantum-delay-ui-mod-chooser.webp', 
+      imageUrl: 'https://gs-dsp.com/images/quantum-delay-ui-mod-chooser.webp',
     },
   });
   console.log(`Created product: ${product1.name}`);

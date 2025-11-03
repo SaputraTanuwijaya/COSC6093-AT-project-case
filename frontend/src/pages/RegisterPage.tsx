@@ -42,10 +42,13 @@ export function RegisterPage() {
 
   const form = useForm({
     initialValues: {
+      username: "",
       email: "",
       password: "",
     },
     validate: {
+      username: (val) =>
+        val.trim().length === 0 ? "Username is required" : null,
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email address"),
       password: (val) =>
         val.length < 8 ? "Password must be at least 8 characters" : null,
@@ -79,6 +82,7 @@ export function RegisterPage() {
             border: "1px solid rgba(255,255,255,0.15)",
             backdropFilter: "blur(25px)",
             boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+            color: "white",
             transition: "transform 0.3s ease, box-shadow 0.3s ease",
           }}
           onMouseEnter={(e) =>
@@ -135,13 +139,35 @@ export function RegisterPage() {
           ) : (
             <form onSubmit={form.onSubmit(handleSubmit)}>
               <TextInput
-                label="Email"
-                placeholder="you@email.com"
+                label="Username"
+                placeholder="your_username"
                 required
                 radius="md"
                 size="md"
                 styles={{
-                  input: { backgroundColor: "rgba(255,255,255,0.1)" },
+                  label: { color: "#ddd", fontWeight: 500 },
+                  input: {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#fff",
+                  },
+                }}
+                {...form.getInputProps("username")}
+              />
+              <TextInput
+                label="Email"
+                placeholder="you@email.com"
+                required
+                mt="md"
+                radius="md"
+                size="md"
+                styles={{
+                  label: { color: "#ddd", fontWeight: 500 },
+                  input: {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#fff",
+                  },
                 }}
                 {...form.getInputProps("email")}
               />
@@ -153,7 +179,12 @@ export function RegisterPage() {
                 radius="md"
                 size="md"
                 styles={{
-                  input: { backgroundColor: "rgba(255,255,255,0.1)" },
+                  label: { color: "#ddd", fontWeight: 500 },
+                  input: {
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#fff",
+                  },
                 }}
                 {...form.getInputProps("password")}
               />

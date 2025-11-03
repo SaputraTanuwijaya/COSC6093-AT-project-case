@@ -101,7 +101,7 @@ export function HomePage() {
           {user ? (
             <Stack align="center" gap="sm">
               <Text size="md" c="gray.1">
-                Hello, <strong>{user.email}</strong> ({user.role})
+                Hello, <strong>{user.username}</strong>
               </Text>
               <Group mt="md">
                 {user.role === "Admin" && (

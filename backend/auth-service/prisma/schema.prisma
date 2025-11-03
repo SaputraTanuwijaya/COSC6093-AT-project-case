@@ -17,6 +17,7 @@ datasource db {
 model User {
   id          Int  @id @default(autoincrement())
   email       String @unique
+  username    String   @unique
   password    String
   role        String @default("User")
   createdAt   DateTime @default(now())
@@ -38,5 +39,6 @@ model Order {
   id        Int      @id @default(autoincrement())
   userId    Int      //Fkey user->id
   total     Float
+  status    String   @default("PENDING")
   createdAt DateTime @default(now())
 }
