@@ -116,6 +116,7 @@ export function MyOrdersPage() {
           {order.status}
         </Badge>
       </Table.Td>
+      <Table.Td fw={600}>${order.total.toFixed(2)}</Table.Td>
       <Table.Td>
         {order.status === "PENDING" && (
           <Button
@@ -128,7 +129,6 @@ export function MyOrdersPage() {
           </Button>
         )}
       </Table.Td>
-      <Table.Td fw={600}>${order.total.toFixed(2)}</Table.Td>
     </Table.Tr>
   ));
 
@@ -191,10 +191,10 @@ export function MyOrdersPage() {
                   <Text fw={600}>Date</Text>
                 </Table.Th>
                 <Table.Th>
-                  <Text fw={600}>Total</Text>
+                  <Text fw={600}>Status</Text>
                 </Table.Th>
                 <Table.Th>
-                  <Text fw={600}>Status</Text>
+                  <Text fw={600}>Price</Text>
                 </Table.Th>
               </Table.Tr>
             </Table.Thead>
