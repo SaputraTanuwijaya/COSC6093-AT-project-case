@@ -31,6 +31,14 @@ interface Order {
   total: number;
   createdAt: string;
   status: string;
+  orderItems: AdminOrderItem[];
+}
+
+interface AdminOrderItem {
+  product: {
+    id: number;
+    name: string;
+  };
 }
 
 export function AdminPage() {
@@ -174,6 +182,15 @@ export function AdminPage() {
       <Table.Td>#{order.id}</Table.Td>
       <Table.Td>{order.userId}</Table.Td>
       <Table.Td>{new Date(order.createdAt).toLocaleDateString()}</Table.Td>
+      <Table.Td>
+        <Stack gap="xs">
+          {order.orderItems.map((item) => (
+            <Text size="sm" key={item.product.id}>
+              (ID: {item.product.id}) {item.product.name}
+            </Text>
+          ))}
+        </Stack>
+      </Table.Td>
       <Table.Td>${order.total.toFixed(2)}</Table.Td>
       <Table.Td>
         <Select
@@ -273,6 +290,7 @@ export function AdminPage() {
                   <Table.Th>Order ID</Table.Th>
                   <Table.Th>User ID</Table.Th>
                   <Table.Th>Date</Table.Th>
+                  <Table.Th>Products</Table.Th>
                   <Table.Th>Total</Table.Th>
                   <Table.Th>Status</Table.Th>
                 </Table.Tr>

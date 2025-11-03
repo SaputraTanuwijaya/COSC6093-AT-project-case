@@ -11,7 +11,7 @@ import {
   Center,
   Box,
   Button,
-  // Group,
+  Stack,
 } from "@mantine/core";
 import api from "../lib/api";
 import { useEffect, useState } from "react";
@@ -22,6 +22,14 @@ interface Order {
   total: number;
   createdAt: string;
   status: string;
+  orderItems: OrderItemProduct[];
+}
+
+interface OrderItemProduct {
+  product: {
+    name: string;
+  };
+  price: number;
 }
 
 export function MyOrdersPage() {
@@ -101,6 +109,15 @@ export function MyOrdersPage() {
           month: "short",
           year: "numeric",
         })}
+      </Table.Td>
+      <Table.Td>
+        <Stack gap="xs">
+          {order.orderItems.map((item, index) => (
+            <Text size="sm" key={index}>
+              {item.product.name}
+            </Text>
+          ))}
+        </Stack>
       </Table.Td>
       <Table.Td>
         <Badge
@@ -189,6 +206,9 @@ export function MyOrdersPage() {
                 </Table.Th>
                 <Table.Th>
                   <Text fw={600}>Date</Text>
+                </Table.Th>
+                <Table.Th>
+                  <Text fw={600}>Products</Text>
                 </Table.Th>
                 <Table.Th>
                   <Text fw={600}>Status</Text>

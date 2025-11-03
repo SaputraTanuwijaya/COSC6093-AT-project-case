@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderStatus } from './order.enum';
+import { Prisma } from '@prisma/client'; //
 
 @Injectable()
 export class OrderService {
@@ -40,7 +41,19 @@ export class OrderService {
         data: {
           userId,
           total,
+          status: OrderStatus.PENDING,
         },
+      });
+
+      const orderItemsData = products.map((product) => ({
+        orderId: order.id,
+        productId: product.id,
+        quantity: 1,
+        price: product.price,
+      }));
+
+      await tx.orderItem.createMany({
+        data: orderItemsData,
       });
 
       for (const product of products) {
@@ -61,12 +74,27 @@ export class OrderService {
   async findAllForUser(userId: number) {
     return this.prisma.order.findMany({
       where: { userId },
+      include: {
+        orderItems: {
+          include: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
   async cancelOrder(orderId: number, userId: number) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
+      include: { orderItems: true },
     });
 
     if (!order) {
@@ -81,19 +109,61 @@ export class OrderService {
       );
     }
 
-    return this.prisma.order.update({
-      where: { id: orderId },
-      data: { status: OrderStatus.CANCELED },
+    return this.prisma.$transaction(async (tx) => {
+      for (const item of order.orderItems) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: {
+              increment: item.quantity,
+            },
+          },
+        });
+      }
+
+      const updatedOrder = await tx.order.update({
+        where: { id: orderId },
+        data: { status: OrderStatus.CANCELED },
+      });
+
+      return updatedOrder;
     });
   }
 
   async updateOrderStatus(orderId: number, status: OrderStatus) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
+      include: { orderItems: true },
     });
 
     if (!order) {
       throw new NotFoundException('Order not found');
+    }
+
+    if (order.status === status) {
+      return order;
+    }
+
+    if (
+      status === OrderStatus.CANCELED &&
+      order.status === OrderStatus.PENDING
+    ) {
+      return this.prisma.$transaction(async (tx) => {
+        for (const item of order.orderItems) {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: {
+              stock: {
+                increment: item.quantity,
+              },
+            },
+          });
+        }
+        return tx.order.update({
+          where: { id: orderId },
+          data: { status: OrderStatus.CANCELED },
+        });
+      });
     }
 
     return this.prisma.order.update({
@@ -103,6 +173,22 @@ export class OrderService {
   }
 
   async findAllOrders() {
-    return this.prisma.order.findMany();
+    return this.prisma.order.findMany({
+      include: {
+        orderItems: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 }

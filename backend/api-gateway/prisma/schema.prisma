@@ -33,6 +33,7 @@ model Product {
   imageUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  orderItems  OrderItem[]
 }
 
 model Order {
@@ -41,4 +42,16 @@ model Order {
   total     Float
   status    String   @default("PENDING")
   createdAt DateTime @default(now())
+  orderItems  OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  
+  quantity  Int     @default(1) 
+  price     Float   
 }
