@@ -59,6 +59,15 @@ The project uses a relational structure optimized for order tracking:
 - Order: Main order header.
 - OrderItem: A join-table that tracks specific product snapshots (price and quantity) at the time of purchase, allowing for historical data accuracy.
 
-This project is a project recommendation for : COSC6093 - Software Architecture\
+## Project Notice
 
-## - Saputra Tanuwijaya
+This repository is published for **portfolio and educational viewing purposes only**.
+
+Copyright © 2025  
+Ownership of this project and its materials is shared with / belongs to  
+**Bina Nusantara University**, according to academic policy.
+
+Reuse, redistribution, or commercial use is **not permitted** without
+explicit permission from the copyright holder(s).
+
+## - Saputra Tanuwijaya ( AT )
