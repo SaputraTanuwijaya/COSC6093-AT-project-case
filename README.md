@@ -31,7 +31,7 @@ Prerequisites
 ### Installation
 1. **Clone the repository**:
 ```bash
-git clone https://github.com/yourusername/quantum-store.git
+git clone https://github.com/saputratanuwijaya/quantum-store.git
 cd quantum-store
 ```
 
